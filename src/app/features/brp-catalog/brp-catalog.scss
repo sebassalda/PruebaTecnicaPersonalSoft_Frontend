@@ -1,0 +1,27 @@
+.catalog-container {
+  padding: 24px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+mat-card-content {
+  padding-top: 16px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 32px;
+}
+
+.error-message {
+  color: #b00020;
+}

@@ -1,0 +1,64 @@
+<div class="detail-container">
+
+  <button mat-button type="button" (click)="goBack()">
+    Volver al catálogo
+  </button>
+
+  @if (loading()) {
+    <p>Cargando información...</p>
+  } @else if (errorMessage()) {
+    <p role="alert">{{ errorMessage() }}</p>
+  } @else if (brp(); as item) {
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          {{ item.codigo }}
+        </mat-card-title>
+
+        <mat-card-subtitle>
+          {{ item.tipoBrp }} - {{ item.estado }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+
+        <p><strong>Departamento:</strong> {{ item.departamento }}</p>
+        <p><strong>Municipio:</strong> {{ item.municipio }}</p>
+        <p><strong>Descripción:</strong> {{ item.descripcion }}</p>
+
+        <p>
+          <strong>Matrícula inmobiliaria:</strong>
+          {{ item.matriculaInmobiliaria ?? 'No aplica' }}
+        </p>
+
+        <p>
+          <strong>Placa:</strong>
+          {{ item.placa ?? 'No aplica' }}
+        </p>
+
+        <p>
+          <strong>Precio:</strong>
+          @if (item.precio !== null) {
+            $ {{ item.precio | number:'1.0-0' }}
+          } @else {
+            Sin precio
+          }
+        </p>
+
+        <p>
+          <strong>Fecha de asignación del precio:</strong>
+          {{ item.fechaAsignacionPrecio ?? 'No aplica' }}
+        </p>
+
+        <p>
+          <strong>Fecha de ingesta:</strong>
+          {{ item.fechaIngesta }}
+        </p>
+
+      </mat-card-content>
+    </mat-card>
+
+  }
+
+</div>
