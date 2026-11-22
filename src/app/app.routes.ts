@@ -34,6 +34,15 @@ export const routes: Routes = [
     loadComponent: () => import('./features/brp-detail/brp-detail').then((m) => m.BrpDetail),
   },
   {
+    path: 'offer-registration',
+    canActivate: [authGuard, moduleGuard],
+    data: { module: 'OFFER_REGISTRATION', 
+      role: 'RADICADOR'
+     },
+    loadComponent: () =>
+      import('./features/offer-registration/offer-registration').then((m) => m.OfferRegistration),
+  },
+  {
     path: '**',
     redirectTo: 'home',
   },

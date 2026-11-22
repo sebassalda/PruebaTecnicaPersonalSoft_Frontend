@@ -1,0 +1,55 @@
+.registration-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+mat-card-content {
+  padding-top: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.nested-card {
+  margin: 20px 0;
+  border: 1px solid #ddd;
+}
+
+.payment-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.payment-row mat-form-field {
+  flex: 1 1 180px;
+}
+
+.totals {
+  margin: 24px 0;
+}
+
+.error-message {
+  color: #b00020;
+}
+
+.success-message {
+  color: #176b35;
+}
+
+.validation-warning {
+  color: #8a5900;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+mat-error {
+  font-size: 12px;
+}

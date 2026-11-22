@@ -26,4 +26,8 @@ export class Home {
   goToCatalog(): void {
     void this.router.navigate(['/brp-catalog']);
   }
+  
+  goToOfferRegistration(): void {
+  void this.router.navigate(['/offer-registration']);
+}
 }
