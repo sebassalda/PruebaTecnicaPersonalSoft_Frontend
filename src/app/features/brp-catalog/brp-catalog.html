@@ -1,31 +1,30 @@
 <div class="catalog-container">
+    <mat-card class="catalog-card">
 
-    <mat-card>
-
-        <mat-card-header>
-            <mat-card-title>
-                Catálogo BRP
-            </mat-card-title>
-
-            <mat-card-subtitle>
-                Consulta de bienes recibidos en pago
-            </mat-card-subtitle>
-        </mat-card-header>
+        <div class="catalog-header">
+            <h1>Catálogo BRP</h1>
+            <p>Consulta de bienes recibidos en pago</p>
+        </div>
 
         <mat-card-content>
-            @if (latestIngestionDate(); as date) {
-            <p>
-                <strong>Catálogo actualizado al:</strong>
-                {{ date }}
-            </p>
-            }
-            <button mat-button type="button" (click)="goHome()">
-                Volver a Home
-            </button>
+
+            <div class="catalog-toolbar">
+                <button mat-stroked-button type="button" (click)="goHome()">
+                    Volver a Home
+                </button>
+
+                @if (latestIngestionDate(); as date) {
+                <div class="catalog-date">
+                    <strong>Catálogo actualizado al:</strong>
+                    <span>{{ date }}</span>
+                </div>
+                }
+            </div>
 
             @if (loading()) {
             <div class="loading-container">
                 <mat-spinner diameter="40"></mat-spinner>
+                <p>Cargando catálogo...</p>
             </div>
             }
 
@@ -38,14 +37,12 @@
             @if (!loading() && !errorMessage()) {
 
             <div class="table-container">
-
                 <table mat-table [dataSource]="brps()">
 
                     <ng-container matColumnDef="codigo">
                         <th mat-header-cell *matHeaderCellDef>
                             Código
                         </th>
-
                         <td mat-cell *matCellDef="let brp">
                             {{ brp.codigo }}
                         </td>
@@ -55,7 +52,6 @@
                         <th mat-header-cell *matHeaderCellDef>
                             Tipo
                         </th>
-
                         <td mat-cell *matCellDef="let brp">
                             {{ brp.tipoBrp }}
                         </td>
@@ -65,9 +61,10 @@
                         <th mat-header-cell *matHeaderCellDef>
                             Estado
                         </th>
-
                         <td mat-cell *matCellDef="let brp">
-                            {{ brp.estado }}
+                            <span class="status-label">
+                                {{ brp.estado }}
+                            </span>
                         </td>
                     </ng-container>
 
@@ -75,10 +72,8 @@
                         <th mat-header-cell *matHeaderCellDef>
                             Ubicación
                         </th>
-
                         <td mat-cell *matCellDef="let brp">
-                            {{ brp.municipio }},
-                            {{ brp.departamento }}
+                            {{ brp.municipio }}, {{ brp.departamento }}
                         </td>
                     </ng-container>
 
@@ -86,7 +81,6 @@
                         <th mat-header-cell *matHeaderCellDef>
                             Precio
                         </th>
-
                         <td mat-cell *matCellDef="let brp">
                             @if (brp.precio !== null) {
                             $ {{ brp.precio | number:'1.0-0' }}
@@ -100,29 +94,25 @@
                         <th mat-header-cell *matHeaderCellDef>
                             Acciones
                         </th>
-
                         <td mat-cell *matCellDef="let brp">
-                            <button mat-button type="button" (click)="viewDetail(brp.id)">
+                            <button mat-stroked-button type="button" class="detail-button" (click)="viewDetail(brp.id)">
                                 Ver detalle
                             </button>
                         </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-
                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
                 </table>
-
             </div>
 
             <mat-paginator [length]="totalElements()" [pageIndex]="pageIndex()" [pageSize]="pageSize()"
-                [pageSizeOptions]="[5, 10, 20]" (page)="onPageChange($event)" showFirstLastButtons></mat-paginator>
+                [pageSizeOptions]="[5, 10, 20]" (page)="onPageChange($event)" showFirstLastButtons>
+            </mat-paginator>
 
             }
 
         </mat-card-content>
-
     </mat-card>
-
 </div>
