@@ -27,31 +27,31 @@
       <h3>Módulos asignados</h3>
 
       @if (authService.userModules().length > 0) {
-        <ul>
-          @for (module of authService.userModules(); track module) {
-            <li>{{ module }}</li>
-          }
-        </ul>
+      <ul>
+        @for (module of authService.userModules(); track module) {
+        <li>{{ module }}</li>
+        }
+      </ul>
       } @else {
-        <p>No tienes módulos asignados.</p>
+      <p>No tienes módulos asignados.</p>
       }
 
       @if (authService.hasModule('BRP_CATALOG')) {
-  <button
-    mat-stroked-button
-    type="button"
-    (click)="goToCatalog()"
-  >
-    Consultar catálogo BRP
-  </button>
-}
+      <button mat-stroked-button type="button" (click)="goToCatalog()">
+        Consultar catálogo BRP
+      </button>
+      }
 
+      @if (
+      authService.userRole() === 'RADICADOR' &&
+      authService.hasModule('OFFER_REGISTRATION')
+      ) {
+      <button mat-stroked-button type="button" (click)="goToOfferRegistration()">
+        Radicar oferta
+      </button>
+      }
 
-      <button
-        mat-flat-button
-        type="button"
-        (click)="logout()"
-      >
+      <button mat-flat-button type="button" (click)="logout()">
         Cerrar sesión
       </button>
 
