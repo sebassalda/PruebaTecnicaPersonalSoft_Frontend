@@ -26,8 +26,16 @@ export class Home {
   goToCatalog(): void {
     void this.router.navigate(['/brp-catalog']);
   }
-  
+
   goToOfferRegistration(): void {
-  void this.router.navigate(['/offer-registration']);
-}
+    void this.router.navigate(['/offer-registration']);
+  }
+
+  goToOfferTracking(): void {
+    void this.router.navigate(['/offer-tracking']);
+  }
+
+  goToUserManagement(): void {
+    void this.router.navigate(['/user-management']);
+  }
 }
