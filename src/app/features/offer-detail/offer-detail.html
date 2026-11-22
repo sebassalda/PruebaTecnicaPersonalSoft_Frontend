@@ -123,5 +123,53 @@
             }
         </mat-card-content>
     </mat-card>
+
+    <mat-card class="attachments-card">
+        <mat-card-header>
+            <mat-card-title>Documentos adjuntos</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            @if (attachmentMessage()) {
+            <p role="status">{{ attachmentMessage() }}</p>
+            }
+
+            @if (canViewAttachments) {
+            @if (loadingAttachments()) {
+            <p>Cargando documentos...</p>
+            } @else {
+            @for (attachment of attachments(); track attachment.id) {
+            <div class="attachment-item">
+                <div>
+                    <strong>{{ attachment.nombreArchivo }}</strong>
+                    <p>
+                        {{ attachment.fechaCarga | date:'dd/MM/yyyy HH:mm' }}
+                    </p>
+                </div>
+
+                <button mat-stroked-button type="button" (click)="downloadAttachment(attachment)">
+                    Descargar
+                </button>
+            </div>
+            } @empty {
+            <p>No hay documentos adjuntos.</p>
+            }
+            }
+            }
+
+            @if (canUploadAttachments) {
+            <div class="attachment-upload">
+                <h4>Agregar documento</h4>
+
+                <input type="file" accept=".pdf,.jpg,.jpeg,.png" (change)="onFileSelected($event)" />
+
+                <button mat-flat-button type="button" [disabled]="!selectedFile() || uploadingAttachment()"
+                    (click)="uploadAttachment()">
+                    {{ uploadingAttachment() ? 'Subiendo...' : 'Subir documento' }}
+                </button>
+            </div>
+            }
+        </mat-card-content>
+    </mat-card>
     }
 </div>
