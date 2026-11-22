@@ -1,0 +1,27 @@
+.tracking-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+mat-card-content {
+  padding-top: 20px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 32px;
+}
+
+.error-message {
+  color: #b00020;
+}

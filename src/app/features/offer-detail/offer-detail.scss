@@ -1,0 +1,23 @@
+.detail-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+mat-card-content {
+  padding-top: 20px;
+}
+
+.nested-card {
+  margin: 16px 0;
+  border: 1px solid #ddd;
+}
+
+.payment {
+  border-top: 1px solid #ddd;
+  padding: 12px 0;
+}
+
+.error-message {
+  color: #b00020;
+}

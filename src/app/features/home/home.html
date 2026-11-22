@@ -51,6 +51,21 @@
       </button>
       }
 
+      @if (authService.hasModule('OFFER_TRACKING')) {
+      <button mat-stroked-button type="button" (click)="goToOfferTracking()">
+        Seguimiento de ofertas
+      </button>
+      }
+
+      @if (
+      authService.userRole() === 'ADMINISTRADOR' &&
+      authService.hasModule('USER_MANAGEMENT')
+      ) {
+      <button mat-stroked-button (click)="goToUserManagement()">
+        Administración de usuarios
+      </button>
+      }
+
       <button mat-flat-button type="button" (click)="logout()">
         Cerrar sesión
       </button>

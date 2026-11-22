@@ -1,0 +1,110 @@
+
+<div class="tracking-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Seguimiento de ofertas</mat-card-title>
+      <mat-card-subtitle>
+        Consulta de ofertas registradas y sus estados
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <button mat-button type="button" (click)="goHome()">
+        Volver a Home
+      </button>
+
+      @if (loading()) {
+        <div class="loading-container">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+      }
+
+      @if (errorMessage()) {
+        <p class="error-message" role="alert">
+          {{ errorMessage() }}
+        </p>
+        <button mat-stroked-button type="button" (click)="loadOffers()">
+          Reintentar
+        </button>
+      }
+
+      @if (!loading() && !errorMessage()) {
+        <div class="table-container">
+          <table mat-table [dataSource]="offers()">
+
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef>Oferta</th>
+              <td mat-cell *matCellDef="let offer">
+                #{{ offer.id }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="brpCodigo">
+              <th mat-header-cell *matHeaderCellDef>BRP</th>
+              <td mat-cell *matCellDef="let offer">
+                {{ offer.brpCodigo }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="valorOferta">
+              <th mat-header-cell *matHeaderCellDef>Valor</th>
+              <td mat-cell *matCellDef="let offer">
+                {{ offer.valorOferta | currency:'COP':'symbol-narrow':'1.0-0' }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="porcentajeDescuento">
+              <th mat-header-cell *matHeaderCellDef>Descuento</th>
+              <td mat-cell *matCellDef="let offer">
+                {{ offer.porcentajeDescuento | number:'1.2-2' }} %
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef>Estado</th>
+              <td mat-cell *matCellDef="let offer">
+                {{ offer.estado }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="fechaRadicacion">
+              <th mat-header-cell *matHeaderCellDef>Radicación</th>
+              <td mat-cell *matCellDef="let offer">
+                {{ offer.fechaRadicacion | date:'dd/MM/yyyy HH:mm' }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef>Acciones</th>
+              <td mat-cell *matCellDef="let offer">
+                <button
+                  mat-button
+                  type="button"
+                  (click)="viewDetail(offer.id)"
+                >
+                  Ver detalle
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+
+        @if (offers().length === 0) {
+          <p>No hay ofertas disponibles para consultar.</p>
+        }
+
+        <mat-paginator
+          [length]="totalElements()"
+          [pageIndex]="pageIndex()"
+          [pageSize]="pageSize()"
+          [pageSizeOptions]="[5, 10, 20]"
+          (page)="onPageChange($event)"
+          showFirstLastButtons
+        ></mat-paginator>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -36,11 +36,36 @@ export const routes: Routes = [
   {
     path: 'offer-registration',
     canActivate: [authGuard, moduleGuard],
-    data: { module: 'OFFER_REGISTRATION', 
-      role: 'RADICADOR'
-     },
+    data: { module: 'OFFER_REGISTRATION', role: 'RADICADOR' },
     loadComponent: () =>
       import('./features/offer-registration/offer-registration').then((m) => m.OfferRegistration),
+  },
+  {
+    path: 'offer-tracking',
+    canActivate: [authGuard, moduleGuard],
+    data: {
+      module: 'OFFER_TRACKING',
+    },
+    loadComponent: () =>
+      import('./features/offer-tracking/offer-tracking').then((m) => m.OfferTracking),
+  },
+  {
+    path: 'offer-tracking/:id',
+    canActivate: [authGuard, moduleGuard],
+    data: {
+      module: 'OFFER_TRACKING',
+    },
+    loadComponent: () => import('./features/offer-detail/offer-detail').then((m) => m.OfferDetail),
+  },
+  {
+    path: 'user-management',
+    canActivate: [authGuard, moduleGuard],
+    data: {
+      module: 'USER_MANAGEMENT',
+      role: 'ADMINISTRADOR',
+    },
+    loadComponent: () =>
+      import('./features/user-management/user-management').then((m) => m.UserManagement),
   },
   {
     path: '**',

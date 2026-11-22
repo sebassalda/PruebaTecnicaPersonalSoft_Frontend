@@ -113,4 +113,9 @@ export class AuthService {
       return true;
     }
   }
+
+  getCurrentUserId(): number | null {
+  return this.currentUser()?.userId ?? null;
+}
+
 }
