@@ -1,0 +1,332 @@
+<div class="registration-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Radicación de ofertas</mat-card-title>
+            <mat-card-subtitle>
+                Registra una oferta sobre un BRP disponible
+            </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <button mat-button type="button" (click)="goHome()">
+                Volver a Home
+            </button>
+
+            @if (errorMessage()) {
+            <p class="error-message" role="alert">{{ errorMessage() }}</p>
+            }
+
+            @if (successMessage()) {
+            <p class="success-message" role="status">{{ successMessage() }}</p>
+            }
+
+            @if (loadingBrps()) {
+            <mat-spinner diameter="35"></mat-spinner>
+            }
+
+            <form [formGroup]="form" (ngSubmit)="submit()">
+                <h3>Información de la oferta</h3>
+
+                <div class="form-grid">
+                    <mat-form-field appearance="outline">
+                        <mat-label>BRP disponible</mat-label>
+                        <mat-select formControlName="brpId" (selectionChange)="onBrpChange($event.value)">
+                            @for (brp of availableBrps(); track brp.id) {
+                            <mat-option [value]="brp.id">
+                                {{ brp.codigo }} - {{ brp.tipoBrp }} -
+                                {{ brp.municipio }}
+                            </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Valor de la oferta</mat-label>
+
+                        <input matInput type="number" min="0.01" step="0.01" formControlName="valorOferta" />
+
+                        @if (form.controls.valorOferta.hasError('required')) {
+                        <mat-error>El valor de la oferta es obligatorio.</mat-error>
+                        }
+
+                        @if (form.controls.valorOferta.hasError('min')) {
+                        <mat-error>El valor debe ser mayor que cero.</mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                @if (selectedBrp(); as brp) {
+                <p>
+                    <strong>Precio BRP:</strong>
+                    {{ brp.precio | currency:'COP':'symbol-narrow':'1.0-0' }}
+                </p>
+                }
+
+                @if (discount() !== null) {
+                <p>
+                    <strong>
+                        {{ discount()! < 0 ? 'Sobreprecio' : 'Descuento estimado' }}: </strong>
+                            {{ (discount()! < 0 ? -discount()! : discount()!) | number:'1.2-2' }} % </p>
+                                }
+
+                                <h3>Oferentes</h3>
+
+                                <div formArrayName="oferentes">
+                                    @for (applicant of applicants.controls; track applicant; let i = $index) {
+                                    <mat-card class="nested-card" [formGroupName]="i">
+                                        <mat-card-header>
+                                            <mat-card-title>Oferente {{ i + 1 }}</mat-card-title>
+                                        </mat-card-header>
+
+                                        <mat-card-content>
+                                            <div class="form-grid">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Tipo de identificación</mat-label>
+                                                    <mat-select formControlName="tipoIdentificacion">
+                                                        <mat-option value="CC">Cédula de ciudadanía</mat-option>
+                                                        <mat-option value="NIT">NIT</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Número de identificación</mat-label>
+                                                    <input matInput formControlName="numeroIdentificacion" />
+                                                    @if (applicant.get('numeroIdentificacion')?.hasError('required') ||
+                                                    applicant.get('numeroIdentificacion')?.hasError('pattern')) {
+                                                    <mat-error>
+                                                        Ingresa un número de identificación válido.
+                                                    </mat-error>
+                                                    }
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Nombre o razón social</mat-label>
+                                                    <input matInput formControlName="nombre" />
+                                                    @if (applicant.get('nombre')?.hasError('required') ||
+                                                    applicant.get('nombre')?.hasError('pattern')) {
+                                                    <mat-error>
+                                                        El nombre o razón social es obligatorio.
+                                                    </mat-error>
+                                                    }
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Participación (%)</mat-label>
+
+                                                    <input matInput type="number" min="0.01" max="100" step="0.01"
+                                                        formControlName="porcentajeParticipacion" />
+
+                                                    @if (applicant.get('porcentajeParticipacion')?.hasError('required'))
+                                                    {
+                                                    <mat-error>
+                                                        El porcentaje de participación es obligatorio.
+                                                    </mat-error>
+                                                    }
+
+                                                    @if (applicant.get('porcentajeParticipacion')?.hasError('min')) {
+                                                    <mat-error>
+                                                        El porcentaje debe ser mayor que 0.
+                                                    </mat-error>
+                                                    }
+
+                                                    @if (applicant.get('porcentajeParticipacion')?.hasError('max')) {
+                                                    <mat-error>
+                                                        El porcentaje no puede superar el 100 %.
+                                                    </mat-error>
+                                                    }
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Correo electrónico (opcional)</mat-label>
+                                                    <input matInput type="email" formControlName="email" />
+                                                    @if (applicant.get('email')?.hasError('email')) {
+                                                    <mat-error>
+                                                        Ingresa un correo electrónico válido.
+                                                    </mat-error>
+                                                    }
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Teléfono (opcional)</mat-label>
+                                                    <input matInput formControlName="telefono" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <h4>Pagos del oferente</h4>
+
+                                            <div formArrayName="pagos">
+                                                @for (payment of getPayments(i).controls; track payment; let j = $index)
+                                                {
+                                                <div class="payment-row" [formGroupName]="j">
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Tipo de pago</mat-label>
+                                                        <mat-select formControlName="tipoPago">
+                                                            <mat-option value="EFECTIVO">De contado</mat-option>
+                                                            <mat-option value="PRESTAMO">Préstamo</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Valor</mat-label>
+                                                        <input matInput type="number" min="0.01" step="0.01"
+                                                            formControlName="valor" />
+                                                        @if (payment.get('valor')?.hasError('required')) {
+                                                        <mat-error>
+                                                            El valor del pago es obligatorio.
+                                                        </mat-error>
+                                                        }
+
+                                                        @if (payment.get('valor')?.hasError('min')) {
+                                                        <mat-error>
+                                                            El valor debe ser mayor que cero.
+                                                        </mat-error>
+                                                        }
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Fecha de pago</mat-label>
+
+                                                        <input matInput [matDatepicker]="paymentPicker"
+                                                            formControlName="fechaPago" readonly
+                                                            (click)="paymentPicker.open()" />
+
+                                                        <mat-datepicker-toggle matIconSuffix
+                                                            [for]="paymentPicker"></mat-datepicker-toggle>
+
+                                                        <mat-datepicker #paymentPicker></mat-datepicker>
+
+                                                        @if (payment.get('fechaPago')?.hasError('required')) {
+                                                        <mat-error>
+                                                            Debes seleccionar una fecha de pago.
+                                                        </mat-error>
+                                                        }
+
+                                                        @if (
+                                                        payment.get('fechaPago')?.hasError('invalidDate') ||
+                                                        payment.get('fechaPago')?.hasError('matDatepickerParse')
+                                                        ) {
+                                                        <mat-error>
+                                                            La fecha seleccionada no es válida.
+                                                        </mat-error>
+                                                        }
+                                                    </mat-form-field>
+
+                                                    @if (payment.get('tipoPago')?.value === 'PRESTAMO') {
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Entidad financiera</mat-label>
+                                                        <input matInput formControlName="entidadFinanciera" />
+                                                        @if (
+                                                        payment.get('tipoPago')?.value === 'PRESTAMO' &&
+                                                        !payment.get('entidadFinanciera')?.value?.trim()
+                                                        ) {
+                                                        @if (
+                                                        payment.get('entidadFinanciera')?.hasError('required') ||
+                                                        payment.get('entidadFinanciera')?.hasError('pattern')
+                                                        ) {
+                                                        <mat-error>
+                                                            La entidad financiera es obligatoria para préstamos.
+                                                        </mat-error>
+                                                        }
+                                                        }
+                                                    </mat-form-field>
+                                                    }
+
+                                                    <button mat-button type="button"
+                                                        [disabled]="getPayments(i).length <= 1"
+                                                        (click)="removePayment(i, j)">
+                                                        Eliminar pago
+                                                    </button>
+                                                </div>
+                                                }
+                                            </div>
+
+                                            <p>
+                                                Total de pagos:
+                                                {{ getApplicantPaymentsTotal(i) | currency:'COP':'symbol-narrow':'1.0-0'
+                                                }}
+                                            </p>
+
+                                            <button mat-stroked-button type="button"
+                                                [disabled]="getPayments(i).length >= 6" (click)="addPayment(i)">
+                                                Agregar pago
+                                            </button>
+
+                                            <button mat-button type="button" [disabled]="applicants.length <= 1"
+                                                (click)="removeApplicant(i)">
+                                                Eliminar oferente
+                                            </button>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    }
+                                </div>
+
+                                <button mat-stroked-button type="button" [disabled]="applicants.length >= 5"
+                                    (click)="addApplicant()">
+                                    Agregar oferente
+                                </button>
+
+                                <div class="totals">
+                                    <p>
+                                        <strong>Participación total:</strong>
+                                        {{ getTotalParticipation() | number:'1.0-2' }} %
+                                    </p>
+
+                                    @if (getTotalParticipation() > 100) {
+                                    <p class="error-message" role="alert">
+                                        La participación total no puede superar el 100 %.
+                                    </p>
+                                    } @else if (
+                                    getTotalParticipation() > 0 &&
+                                    getTotalParticipation() < 100 ) { <p class="validation-warning">
+                                        La participación debe sumar 100 %.
+                                        Faltan
+                                        {{ 100 - getTotalParticipation() | number:'1.0-2' }} %.
+                </p>
+                }
+
+                <p>
+                    <strong>Total de pagos:</strong>
+                    {{ getTotalPayments() | currency:'COP':'symbol-narrow':'1.0-0' }}
+                </p>
+
+                @if (
+                offerTotal > 0 &&
+                Math.abs(getTotalPayments() - offerTotal) > 0.009
+                ) {
+                <p class="validation-warning">
+                    La suma de los pagos debe coincidir con el valor de la oferta.
+                </p>
+                }
+
+                @for (applicant of applicants.controls; track applicant; let i = $index) {
+                @if (
+                offerTotal > 0 &&
+                Math.abs(
+                getApplicantPaymentsTotal(i) -
+                getExpectedApplicantTotal(i)
+                ) > 0.009
+                ) {
+                <p class="validation-warning">
+                    Los pagos del oferente {{ i + 1 }}
+                    no corresponden a su porcentaje de participación.
+                </p>
+                }
+                }
+
+</div>
+
+<button mat-flat-button type="submit" [disabled]="!canSubmit">
+    {{ submitting() ? 'Registrando...' : 'Radicar oferta' }}
+</button>
+
+@if (!canSubmit && !submitting() && form.enabled) {
+<p class="validation-warning">
+    Completa los campos obligatorios y verifica que
+    los porcentajes y pagos coincidan con el valor
+    total de la oferta.
+</p>
+}
+</form>
+</mat-card-content>
+</mat-card>
+</div>

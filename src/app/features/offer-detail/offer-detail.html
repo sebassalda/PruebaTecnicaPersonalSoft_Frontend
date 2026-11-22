@@ -1,0 +1,175 @@
+<div class="detail-container">
+    <button mat-button type="button" (click)="goBack()">
+        Volver al seguimiento
+    </button>
+
+    @if (loading()) {
+    <mat-spinner diameter="40"></mat-spinner>
+    } @else if (errorMessage()) {
+    <p class="error-message" role="alert">{{ errorMessage() }}</p>
+    } @else if (offer(); as item) {
+
+    <h3>Gestión de la oferta</h3>
+
+    @if (actionMessage()) {
+    <p role="status">{{ actionMessage() }}</p>
+    }
+
+    @if (canTakeOffer(item)) {
+    <button mat-flat-button type="button" [disabled]="processingAction()" (click)="executeAction('take')">
+        Tomar oferta
+    </button>
+    }
+
+    @if (canAnalyzeOffer(item)) {
+    <button mat-flat-button type="button" [disabled]="processingAction()" (click)="executeAction('escalate')">
+        Escalar al jefe
+    </button>
+
+    <button mat-stroked-button type="button" [disabled]="processingAction()" (click)="executeAction('analysisReject')">
+        Rechazar oferta
+    </button>
+    }
+
+    @if (canApproveOffer(item)) {
+    <button mat-flat-button type="button" [disabled]="processingAction()" (click)="executeAction('approve')">
+        Aprobar oferta
+    </button>
+
+    <button mat-stroked-button type="button" [disabled]="processingAction()" (click)="executeAction('approvalReject')">
+        Rechazar oferta
+    </button>
+
+    <button mat-stroked-button type="button" [disabled]="processingAction()" (click)="executeAction('return')">
+        Devolver al analista
+    </button>
+    }
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Oferta #{{ item.id }}</mat-card-title>
+            <mat-card-subtitle>
+                {{ item.brpCodigo }} - {{ item.estado }}
+            </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <h3>Información general</h3>
+
+            <p><strong>BRP:</strong> {{ item.brpCodigo }}</p>
+            <p>
+                <strong>Valor:</strong>
+                {{ item.valorOferta | currency:'COP':'symbol-narrow':'1.0-0' }}
+            </p>
+            <p>
+                <strong>Descuento:</strong>
+                {{ item.porcentajeDescuento | number:'1.2-2' }} %
+            </p>
+            <p><strong>Estado:</strong> {{ item.estado }}</p>
+            <p><strong>Radicador ID:</strong> {{ item.radicadorId }}</p>
+            <p>
+                <strong>Analista ID:</strong>
+                {{ item.analistaId ?? 'Sin asignar' }}
+            </p>
+            <p>
+                <strong>Fecha de radicación:</strong>
+                {{ item.fechaRadicacion | date:'dd/MM/yyyy HH:mm' }}
+            </p>
+            <p>
+                <strong>Última actualización:</strong>
+                {{ item.fechaActualizacion | date:'dd/MM/yyyy HH:mm' }}
+            </p>
+
+            <h3>Oferentes</h3>
+
+            @for (applicant of item.oferentes; track applicant.id) {
+            <mat-card class="nested-card">
+                <mat-card-content>
+                    <p><strong>Nombre:</strong> {{ applicant.nombre }}</p>
+                    <p>
+                        <strong>Identificación:</strong>
+                        {{ applicant.tipoIdentificacion }}
+                        {{ applicant.numeroIdentificacion }}
+                    </p>
+                    <p>
+                        <strong>Participación:</strong>
+                        {{ applicant.porcentajeParticipacion | number:'1.2-2' }} %
+                    </p>
+                    <p><strong>Correo:</strong> {{ applicant.email ?? 'No registrado' }}</p>
+                    <p><strong>Teléfono:</strong> {{ applicant.telefono ?? 'No registrado' }}</p>
+
+                    <h4>Pagos</h4>
+
+                    @for (payment of applicant.pagos; track payment.id) {
+                    <div class="payment">
+                        <p><strong>Tipo:</strong> {{ payment.tipoPago }}</p>
+                        <p>
+                            <strong>Valor:</strong>
+                            {{ payment.valor | currency:'COP':'symbol-narrow':'1.0-0' }}
+                        </p>
+                        <p><strong>Fecha:</strong> {{ payment.fechaPago }}</p>
+
+                        @if (payment.entidadFinanciera) {
+                        <p>
+                            <strong>Entidad financiera:</strong>
+                            {{ payment.entidadFinanciera }}
+                        </p>
+                        }
+                    </div>
+                    }
+                </mat-card-content>
+            </mat-card>
+            } @empty {
+            <p>No hay oferentes registrados.</p>
+            }
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="attachments-card">
+        <mat-card-header>
+            <mat-card-title>Documentos adjuntos</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            @if (attachmentMessage()) {
+            <p role="status">{{ attachmentMessage() }}</p>
+            }
+
+            @if (canViewAttachments) {
+            @if (loadingAttachments()) {
+            <p>Cargando documentos...</p>
+            } @else {
+            @for (attachment of attachments(); track attachment.id) {
+            <div class="attachment-item">
+                <div>
+                    <strong>{{ attachment.nombreArchivo }}</strong>
+                    <p>
+                        {{ attachment.fechaCarga | date:'dd/MM/yyyy HH:mm' }}
+                    </p>
+                </div>
+
+                <button mat-stroked-button type="button" (click)="downloadAttachment(attachment)">
+                    Descargar
+                </button>
+            </div>
+            } @empty {
+            <p>No hay documentos adjuntos.</p>
+            }
+            }
+            }
+
+            @if (canUploadAttachments) {
+            <div class="attachment-upload">
+                <h4>Agregar documento</h4>
+
+                <input type="file" accept=".pdf,.jpg,.jpeg,.png" (change)="onFileSelected($event)" />
+
+                <button mat-flat-button type="button" [disabled]="!selectedFile() || uploadingAttachment()"
+                    (click)="uploadAttachment()">
+                    {{ uploadingAttachment() ? 'Subiendo...' : 'Subir documento' }}
+                </button>
+            </div>
+            }
+        </mat-card-content>
+    </mat-card>
+    }
+</div>

@@ -1,0 +1,124 @@
+<div class="detail-container">
+
+  <div class="navigation-bar">
+    <button mat-stroked-button type="button" (click)="goBack()">
+      Volver al catálogo
+    </button>
+  </div>
+
+  @if (loading()) {
+  <div class="loading-container">
+    <p>Cargando información del bien...</p>
+  </div>
+  } @else if (errorMessage()) {
+  <p class="error-message" role="alert">
+    {{ errorMessage() }}
+  </p>
+  } @else if (brp(); as item) {
+
+  <mat-card class="detail-card">
+
+    <div class="detail-header">
+      <h1>{{ item.codigo }}</h1>
+      <p>Detalle del bien recibido en pago</p>
+    </div>
+
+    <mat-card-content>
+
+      <section class="detail-section">
+        <h2>Información general</h2>
+
+        <div class="detail-grid">
+          <div class="detail-field">
+            <span class="field-label">Código</span>
+            <span class="field-value">{{ item.codigo }}</span>
+          </div>
+
+          <div class="detail-field">
+            <span class="field-label">Tipo de bien</span>
+            <span class="field-value">{{ item.tipoBrp }}</span>
+          </div>
+
+          <div class="detail-field">
+            <span class="field-label">Estado</span>
+            <span class="status-label">{{ item.estado }}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h2>Ubicación y descripción</h2>
+
+        <div class="detail-grid">
+          <div class="detail-field">
+            <span class="field-label">Departamento</span>
+            <span class="field-value">{{ item.departamento }}</span>
+          </div>
+
+          <div class="detail-field">
+            <span class="field-label">Municipio</span>
+            <span class="field-value">{{ item.municipio }}</span>
+          </div>
+
+          <div class="detail-field full-width">
+            <span class="field-label">Descripción</span>
+            <span class="field-value">{{ item.descripcion }}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h2>Identificación del bien</h2>
+
+        <div class="detail-grid">
+          <div class="detail-field">
+            <span class="field-label">Matrícula inmobiliaria</span>
+            <span class="field-value">
+              {{ item.matriculaInmobiliaria ?? 'No aplica' }}
+            </span>
+          </div>
+
+          <div class="detail-field">
+            <span class="field-label">Placa</span>
+            <span class="field-value">
+              {{ item.placa ?? 'No aplica' }}
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h2>Información económica y fechas</h2>
+
+        <div class="detail-grid">
+          <div class="detail-field">
+            <span class="field-label">Precio</span>
+            <span class="field-value price-value">
+              @if (item.precio !== null) {
+              $ {{ item.precio | number:'1.0-0' }}
+              } @else {
+              Sin precio
+              }
+            </span>
+          </div>
+
+          <div class="detail-field">
+            <span class="field-label">Fecha de asignación del precio</span>
+            <span class="field-value">
+              {{ item.fechaAsignacionPrecio ?? 'No aplica' }}
+            </span>
+          </div>
+
+          <div class="detail-field">
+            <span class="field-label">Fecha de ingesta</span>
+            <span class="field-value">{{ item.fechaIngesta }}</span>
+          </div>
+        </div>
+      </section>
+
+    </mat-card-content>
+  </mat-card>
+
+  }
+
+</div>

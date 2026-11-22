@@ -1,0 +1,89 @@
+<div class="home-container">
+  <mat-card class="home-card">
+
+    <div class="home-header">
+      <h1>BRP Offer Management</h1>
+      <p>Panel principal de gestión de ofertas</p>
+    </div>
+
+    <mat-card-content>
+
+      <section class="user-section">
+        <h2>Información de la sesión</h2>
+
+        <div class="user-info">
+          <p>
+            <strong>Usuario</strong>
+            <span>{{ authService.currentUser()?.email }}</span>
+          </p>
+
+          <p>
+            <strong>Rol</strong>
+            <span>{{ authService.userRole() }}</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="modules-section">
+        <h2>Módulos asignados</h2>
+
+        @if (authService.userModules().length > 0) {
+        <div class="module-list">
+          @for (module of authService.userModules(); track module) {
+          <span class="module-chip">{{ module }}</span>
+          }
+        </div>
+        } @else {
+        <p class="empty-message">
+          No tienes módulos asignados.
+        </p>
+        }
+      </section>
+
+      <section class="navigation-section">
+        <h2>Accesos disponibles</h2>
+
+        <div class="action-buttons">
+
+          @if (authService.hasModule('BRP_CATALOG')) {
+          <button mat-flat-button type="button" (click)="goToCatalog()">
+            Consultar catálogo BRP
+          </button>
+          }
+
+          @if (
+          authService.userRole() === 'RADICADOR' &&
+          authService.hasModule('OFFER_REGISTRATION')
+          ) {
+          <button mat-flat-button type="button" (click)="goToOfferRegistration()">
+            Radicar oferta
+          </button>
+          }
+
+          @if (authService.hasModule('OFFER_TRACKING')) {
+          <button mat-flat-button type="button" (click)="goToOfferTracking()">
+            Seguimiento de ofertas
+          </button>
+          }
+
+          @if (
+          authService.userRole() === 'ADMINISTRADOR' &&
+          authService.hasModule('USER_MANAGEMENT')
+          ) {
+          <button mat-flat-button type="button" (click)="goToUserManagement()">
+            Administración de usuarios
+          </button>
+          }
+
+        </div>
+      </section>
+
+      <div class="logout-section">
+        <button mat-stroked-button type="button" (click)="logout()">
+          Cerrar sesión
+        </button>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>
