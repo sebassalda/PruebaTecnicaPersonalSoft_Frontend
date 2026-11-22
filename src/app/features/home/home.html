@@ -1,0 +1,51 @@
+<div class="home-container">
+
+  <mat-card>
+
+    <mat-card-header>
+      <mat-card-title>
+        BRP Offer Management
+      </mat-card-title>
+
+      <mat-card-subtitle>
+        Sesión iniciada correctamente
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <p>
+        <strong>Usuario:</strong>
+        {{ authService.currentUser()?.email }}
+      </p>
+
+      <p>
+        <strong>Rol:</strong>
+        {{ authService.userRole() }}
+      </p>
+
+      <h3>Módulos asignados</h3>
+
+      @if (authService.userModules().length > 0) {
+        <ul>
+          @for (module of authService.userModules(); track module) {
+            <li>{{ module }}</li>
+          }
+        </ul>
+      } @else {
+        <p>No tienes módulos asignados.</p>
+      }
+
+      <button
+        mat-flat-button
+        type="button"
+        (click)="logout()"
+      >
+        Cerrar sesión
+      </button>
+
+    </mat-card-content>
+
+  </mat-card>
+
+</div>
