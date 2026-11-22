@@ -9,15 +9,11 @@ import { AuthService } from '../../core/auth/auth.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    MatButtonModule,
-    MatCardModule
-  ],
+  imports: [MatButtonModule, MatCardModule],
   templateUrl: './home.html',
-  styleUrl: './home.scss'
+  styleUrl: './home.scss',
 })
 export class Home {
-
   readonly authService = inject(AuthService);
 
   private readonly router = inject(Router);
@@ -25,5 +21,9 @@ export class Home {
   logout(): void {
     this.authService.logout();
     void this.router.navigate(['/login']);
+  }
+
+  goToCatalog(): void {
+    void this.router.navigate(['/brp-catalog']);
   }
 }

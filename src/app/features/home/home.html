@@ -36,6 +36,17 @@
         <p>No tienes módulos asignados.</p>
       }
 
+      @if (authService.hasModule('BRP_CATALOG')) {
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="goToCatalog()"
+  >
+    Consultar catálogo BRP
+  </button>
+}
+
+
       <button
         mat-flat-button
         type="button"
