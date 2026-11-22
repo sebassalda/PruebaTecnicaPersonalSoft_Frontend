@@ -1,27 +1,126 @@
 .tracking-container {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 32px 20px;
+
+  >mat-card {
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #ffffff;
+  }
+
+  >mat-card>mat-card-header {
+    display: block;
+    padding: 28px 32px;
+    background: #163a63;
+
+    mat-card-title {
+      margin-bottom: 8px;
+      color: #ffffff;
+      font-size: 25px;
+      font-weight: 600;
+    }
+
+    mat-card-subtitle {
+      color: #dbeafe;
+      font-size: 14px;
+    }
+  }
+
+  >mat-card>mat-card-content {
+    padding: 28px 32px 32px;
+  }
 }
 
-mat-card-content {
-  padding-top: 20px;
+// Botón de regreso
+.tracking-container>mat-card>mat-card-content>button:first-child {
+  margin-bottom: 24px;
+  border: 1px solid #94a3b8;
+  border-radius: 24px;
+  color: #163a63;
 }
 
+// Contenedor de tabla
 .table-container {
   overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
 }
 
 table {
   width: 100%;
+  min-width: 850px;
 }
 
+// Encabezados
+.mat-mdc-header-row {
+  background: #eaf3fc;
+}
+
+.mat-mdc-header-cell {
+  color: #163a63;
+  font-weight: 600;
+}
+
+// Filas
+.mat-mdc-row:hover {
+  background: #f8fafc;
+}
+
+.mat-mdc-cell {
+  color: #243447;
+}
+
+// Botones de detalle
+.mat-mdc-cell button {
+  border: 1px solid #bfdbfe;
+  border-radius: 24px;
+  color: #2563a6;
+  white-space: nowrap;
+}
+
+// Paginador
+mat-paginator {
+  margin-top: 12px;
+  background: #f8fafc;
+  border-radius: 6px;
+}
+
+// Cargando
 .loading-container {
   display: flex;
   justify-content: center;
-  padding: 32px;
+  padding: 48px 16px;
 }
 
+// Mensajes de error
 .error-message {
-  color: #b00020;
+  padding: 12px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+// Estado vacío
+.table-container+p {
+  padding: 16px;
+  color: #64748b;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .tracking-container {
+    padding: 16px;
+  }
+
+  .tracking-container>mat-card>mat-card-header {
+    padding: 22px 20px;
+  }
+
+  .tracking-container>mat-card>mat-card-content {
+    padding: 20px;
+  }
 }

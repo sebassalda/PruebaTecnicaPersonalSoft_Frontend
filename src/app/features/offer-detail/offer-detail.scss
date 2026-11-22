@@ -1,30 +1,171 @@
 .detail-container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 32px 20px;
+
+  // Botón de regreso
+  >button:first-child {
+    margin-bottom: 20px;
+    border: 1px solid #94a3b8;
+    border-radius: 24px;
+    color: #163a63;
+  }
+
+  // Título de gestión
+  >h3 {
+    margin: 12px 0 16px;
+    color: #163a63;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  // Botones de gestión de la oferta
+  >button:not(:first-child) {
+    min-height: 40px;
+    margin: 0 10px 16px 0;
+    border-radius: 24px;
+  }
+
+  >button[mat-flat-button] {
+    background: #2563a6;
+    color: #ffffff;
+  }
+
+  >button[mat-stroked-button] {
+    border-color: #94a3b8;
+    color: #163a63;
+  }
+
+  // Tarjetas principales
+  >mat-card {
+    overflow: hidden;
+    margin-top: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #ffffff;
+  }
+
+  // Encabezados principales
+  >mat-card>mat-card-header {
+    display: block;
+    padding: 26px 32px;
+    background: #163a63;
+
+    mat-card-title {
+      margin-bottom: 8px;
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    mat-card-subtitle {
+      color: #dbeafe;
+      font-size: 14px;
+    }
+  }
+
+  >mat-card>mat-card-content {
+    padding: 28px 32px 32px;
+  }
 }
 
-mat-card-content {
-  padding-top: 20px;
+// Títulos internos
+mat-card-content>h3 {
+  margin: 12px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #163a63;
+  font-size: 18px;
+  font-weight: 600;
 }
 
+mat-card-content>h3:not(:first-child) {
+  margin-top: 32px;
+}
+
+// Información general
+.detail-container>mat-card:not(.attachments-card)>mat-card-content>p {
+  display: inline-flex;
+  flex-direction: column;
+  vertical-align: top;
+  gap: 7px;
+  width: calc(50% - 10px);
+  min-height: 70px;
+  margin: 0 16px 16px 0;
+  padding: 14px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #243447;
+  overflow-wrap: anywhere;
+
+  strong {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  &:nth-of-type(even) {
+    margin-right: 0;
+  }
+}
+
+// Tarjetas de oferentes
 .nested-card {
-  margin: 16px 0;
-  border: 1px solid #ddd;
+  margin: 16px 0 22px;
+  border: 1px solid #dbe5f0;
+  border-radius: 10px;
+  background: #ffffff;
+
+  mat-card-content {
+    padding: 22px !important;
+  }
+
+  p {
+    margin: 10px 0;
+    color: #243447;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+
+  strong {
+    color: #163a63;
+  }
+
+  h4 {
+    margin: 24px 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #163a63;
+    font-size: 16px;
+    font-weight: 600;
+  }
 }
 
+// Información de pagos
 .payment {
-  border-top: 1px solid #ddd;
-  padding: 12px 0;
+  margin-bottom: 12px;
+  padding: 16px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+
+  p {
+    margin: 8px 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
-.error-message {
-  color: #b00020;
-}
-
-
+// Documentos adjuntos
 .attachments-card {
-  margin-top: 24px;
+  margin-top: 24px !important;
+
+  >mat-card-header {
+    background: #163a63;
+  }
 }
 
 .attachment-item {
@@ -32,20 +173,108 @@ mat-card-content {
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  padding: 12px 0;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 16px;
+  margin-bottom: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+
+  strong {
+    color: #163a63;
+    overflow-wrap: anywhere;
+  }
+
+  p {
+    margin: 6px 0 0;
+    color: #64748b;
+    font-size: 13px;
+  }
+
+  button {
+    flex-shrink: 0;
+    border-color: #bfdbfe;
+    color: #2563a6;
+  }
 }
 
-.attachment-item p {
-  margin: 4px 0 0;
-  color: #64748b;
-  font-size: 13px;
-}
-
+// Subida de documentos
 .attachment-upload {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 16px;
   margin-top: 24px;
+  padding: 20px;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: #eaf3fc;
+
+  h4 {
+    margin: 0;
+    color: #163a63;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  input[type="file"] {
+    max-width: 100%;
+    color: #243447;
+  }
+
+  button {
+    min-height: 40px;
+    background: #2563a6;
+    color: #ffffff;
+  }
+}
+
+// Mensajes
+.error-message {
+  padding: 12px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.detail-container>p[role="status"],
+.attachments-card p[role="status"] {
+  padding: 12px 16px;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  background: #eaf3fc;
+  color: #163a63;
+}
+
+// Adaptación a pantallas pequeñas
+@media (max-width: 700px) {
+  .detail-container {
+    padding: 16px;
+
+    >mat-card>mat-card-header {
+      padding: 22px 20px;
+    }
+
+    >mat-card>mat-card-content {
+      padding: 20px;
+    }
+  }
+
+  .detail-container>mat-card:not(.attachments-card)>mat-card-content>p {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .nested-card mat-card-content {
+    padding: 16px !important;
+  }
+
+  .attachment-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .attachment-upload {
+    padding: 16px;
+  }
 }
